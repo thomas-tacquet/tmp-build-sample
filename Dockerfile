@@ -1,13 +1,9 @@
-# Start with your real-world compilation environment
-FROM golang:1.23-alpine
+# Starts with a completely empty filesystem layer—no unpacking required
+FROM scratch
 
-# Install git and bash (needed for cloning and script execution)
-RUN apk add --no-cache git bash
+# Copy a static file or a statically-compiled binary from your build context
+COPY application-asset.txt /application-asset.txt
 
-# Pull the static Kaniko binaries directly from the official image
-COPY --from=gcr.io/kaniko-project/executor:debug /kaniko/executor /kaniko/executor
-
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
-ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
+# (Optional) If copying a statically compiled binary (Go/Rust/C++ with zero dynamic links)
+# COPY my-static-binary /my-static-binary
+# ENTRYPOINT ["/my-static-binary"]
