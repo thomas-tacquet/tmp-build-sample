@@ -1,14 +1,9 @@
-# 1. Use the official Google Distroless static image as the base
-# This image contains only the minimal layout required for an application to run
-FROM gcr.io/distroless/static-debian12
+# Safe alternative to Alpine that completely bypasses the gVisor chown bug
+FROM busybox:musl
 
-# 2. Set a secure working directory
-WORKDIR /app
+# Create a simple script inside the image
+RUN echo 'echo "Hello from an image built entirely inside Scaleway Serverless Jobs!"' > /run.sh
+RUN chmod +x /run.sh
 
-# 3. Copy your application file(s) from your repository context
-# (Replace "app.js" or "hello-binary" with your actual file)
-COPY hello-executable /app/hello-executable
-
-# 4. Configure the execution entrypoint
-# Since Distroless does not include a shell (/bin/sh), you must execute your binary/runtime directly
-ENTRYPOINT ["/app/hello-executable"]
+# Run the script on boot
+CMD ["/bin/sh", "/run.sh"]
