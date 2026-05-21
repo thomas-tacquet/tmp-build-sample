@@ -30,6 +30,7 @@ func main() {
 		port = "8080"
 	}
 
+	fmt.Println("lel")
 	mux := http.NewServeMux()
 
 	// 1. Health check endpoint

@@ -10,8 +10,6 @@ WORKDIR /app
 
 # Optimization Trick: Copy dependency descriptors first.
 # This layer caches automatically and won't re-run unless go.mod updates.
-COPY go.mod go.sum* ./
-RUN go mod download
 
 # Copy the rest of your application code
 COPY . .
