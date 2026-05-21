@@ -1,9 +1,9 @@
-# Safe alternative to Alpine that completely bypasses the gVisor chown bug
-FROM busybox:musl
+# Starts with a completely empty filesystem layer—no unpacking required
+FROM scratch
 
-# Create a simple script inside the image
-RUN echo 'echo "Hello from an image built entirely inside Scaleway Serverless Jobs!"' > /run.sh
-RUN chmod +x /run.sh
+# Copy a static file or a statically-compiled binary from your build context
+COPY application-asset.txt /application-asset.txt
 
-# Run the script on boot
-CMD ["/bin/sh", "/run.sh"]
+# (Optional) If copying a statically compiled binary (Go/Rust/C++ with zero dynamic links)
+# COPY my-static-binary /my-static-binary
+# ENTRYPOINT ["/my-static-binary"]
